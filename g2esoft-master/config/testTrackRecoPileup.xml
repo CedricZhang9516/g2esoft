@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TreeProc>
+  <!-- libraries to load: libs should be in LD_LIBRARY_PATH path -->
+  <libraries>
+    libg2esoftCommon.so
+    libPileupArranger.so
+    libStripDigi.so
+    libHitMerge.so
+    libHitReco.so
+    libTrkFinding.so
+    libTrkFitting.so
+    libTrackBack.so
+  </libraries>
+  <run arranger="PileupArranger">
+    <!-- Processors are registered in the order written here -->
+    <!-- if instance is omitted instance name is the same as processor name -->
+    <processor name="StripDigi" />
+    <processor name="HitMerge" />
+    <processor name="HitReco" />
+    <processor name="TrkFinding" />
+    <processor name="TrkFitting" instance="DafRef" />
+    <processor name="TrackBack" />
+  </run>
+  
+  <parameters>
+    <!-- global parameters: accessible also from processors -->
+    <string name="InputFile">testG4Out.root</string>
+    <string name="OutputFile">testOutPileup.root</string>
+    
+    <int name="EventNumToProcess">100</int>
+    <int name="EventIdxToStart">0</int>
+    <int name="WritePeriod">100</int>
+    <int name="PrintPeriod">10</int>
+
+    <!-- logging configurations -->
+
+    <!-- Log file name, cout, cerr or a real filename -->
+    <string name="LogFileName">cerr</string>-->
+    <!-- $p = process, $i = instance, $l = level, $F = sourcefile, $L = line, $f = funcname, %*: see strftime -->
+    <string name="LogFormat">[%Y/%m/%d %H:%M:%S%z $p $l] </string>
+    <!-- log levels. later more important -->
+    <stringVec name="LogLevels">debug info warning error fatal</stringVec>
+    <!-- default level used for log() << ... -->
+    <string name="DefaultLogLevel">info</string>
+    <!-- minimal importance to write to log -->
+    <string name="WriteLogLevel">info</string>
+
+    <string name="MCParticleName">PileupMCParticles</string>
+    <string name="MCStepName">PileupMCSteps</string>
+    <string name="SimHitName">PileupSimHits</string>
+    <string name="StripHitName">StripHits</string>
+    <string name="StripClusterName">StripClusters</string>
+    <string name="RecoHitName">RecoHits</string>
+    <int name="NVane">40</int>
+    <bool name="DoubleRow">1</bool>
+    <double name="StripPitch">0.19</double>
+    <double name="SensorSize">98.77</double>
+    <double name="InactiveMiddle">0.5</double>
+    <doubleVec name="SensorOriginX">91.975 191.245</doubleVec>
+    <doubleVec name="SensorOriginZ">0.5 99.77</doubleVec>
+    <double name="SensorGap">0.5</double>
+    <int name="TimeDiv">5</int>
+
+    <arranger name="PileupArranger">
+      <string name="InputMCParticleName">MCParticles</string>
+      <string name="InputMCStepName">MCSteps</string>
+      <string name="InputSimHitName">SimHits</string>
+      <bool name="ModifyTime">1</bool>
+      <double name="TimeRange">10.0</double>
+      <int name="NumberToCombine">10</int>
+      <int name="RandomSeed">1</int>
+    </arranger>
+
+    <processor name="StripDigi">
+      <int name="StripPerVane">512</int>
+      <double name="PosFirstStrip">0.84</double>
+      <double name="InactiveEdge">0.745</double>
+      <double name="EdepMIPThreshold">0.3</double>
+      <double name="EdepMIPThreshold2">0.0</double>
+      <bool name="StripInG4">1</bool>
+      <string name="TimeDigiMethod">Diff</string>
+      <string name="CRRCParamFileName">app/processors/StripDigi/data/CRRCnParameter.root</string>
+      <string name="DiffParamFileName">app/processors/StripDigi/data/DiffExtendParameter.root</string>
+    </processor>
+
+    <processor name="HitMerge">
+      <double name="TimeMatch">1.</double>
+    </processor>
+
+    <processor name="HitReco">
+      <double name="TimeMatch">5.</double>
+    </processor>
+
+    <processor name="TrkFinding">
+      <string name="TrackName">FoundTracks</string>
+      <int name="HoughNStepTheta">180</int>
+      <int name="HoughNStepRho">1000</int>
+      <int name="HoughRhoMin">-500</int>
+      <int name="HoughRhoMax">500</int>
+      <int name="CutHoughPhiZPeak">3</int>
+      <int name="CutHoughPhiZPeakDeltaRay">10</int>
+      <double name="CutTrackRangeThetaMin">30.0</double>
+      <double name="CutTrackRangeThetaMax">150.0</double>
+      <double name="CutDeltaRayRangeThetaMax">3.0</double>
+      <double name="CutHoughPhiZSeedResi">10.0</double>
+      <double name="CutHoughPhiZSeedResiDeltaRay">0.01</double>
+      <double name="CutExtrapTolerance">5.0</double>
+      <double name="CutExtrapToleranceCoeffDphi">5.0</double>
+      <int name="CutExtrapMiss">5</int>
+      <int name="CutExtrapNoCross">5</int>
+      <int name="ThresholdSuccess">5</int>
+      <double name="TimeWindowStep">5.0</double>
+      <double name="TimeWindowWidth">10.0</double>
+      <int name="DrawLevel">0</int>
+      <bool name="DoSmallCurlFinding">0</bool>
+      <bool name="ReDoFindingNextTimeBin">1</bool>
+      <double name="EvtDispThresholdMomentum">200.0</double>
+    </processor>
+
+    <processor name="TrkFitting">
+      <string name="InputTrackName">FoundTracks</string>
+      <string name="DetectorGeometry">app/processors/TrkFitting/data/Detector.gdml</string>
+      <bool name="ShowEventDisplay">0</bool>
+      <bool name="UseStripCluster">1</bool>
+      <bool name="RemoveGhostTrack">1</bool>
+      <bool name="ConnectTrack">1</bool>
+      <double name="MomentumMin">0</double>
+      <double name="Chi2NDFMax">100</double>
+      <double name="GhostTrackTimeDiff">2.5</double>
+      <double name="ConnectChi2NDFMax">3.</double>
+      <double name="ConnectTimeDiff">5.</double>
+      <double name="ConnectSearchTime">10.</double>
+      <double name="SensorDistance">3.32</double>
+      <string name="MagnetData">app/processors/G4Sim/data/M20160422_G20180125_N15E-5-Yamanaka-20200214.dat</string>
+      <bool name="UniformField">1</bool>
+      <bool name="InterpolateField">1</bool>
+
+      <instance name="DafRef">
+	<string name="FittedTrackName">DafRefTracks</string>
+	<string name="FitterName">DafRef</string>
+      </instance>
+
+    </processor>
+
+    <processor name="TrackBack">
+      <string name="TrackName">DafRefTracks</string>
+      <string name="VertexName">Vertexes</string>
+      
+      <double name="MagneticField">3.</double>
+      <double name="PolyimidedEdx">1.32</double>
+      <double name="PolyimideDensity">1.42</double>
+      <double name="WindowOriginX">0.</double>
+      <double name="WindowOriginY">0.</double>
+      <double name="WindowInsideRadius">305.</double>
+      <double name="WindowThickness">0.1</double>
+      <double name="FPCThickness">0.121</double>
+      <double name="MuonOrbitCenterX">0.</double>
+      <double name="MuonOrbitCenterY">0.</double>
+      <double name="MuonOrbitCenterZ">0.</double>
+      <double name="MuonMomnetum">300.</double>
+
+      <bool name="UseMCHit">0</bool>
+      <bool name="EnableDraw">0</bool>
+    </processor>
+
+  </parameters>
+</TreeProc>

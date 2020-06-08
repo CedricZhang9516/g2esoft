@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TreeProc>
+  <!-- libraries to load: libs should be in LD_LIBRARY_PATH path -->
+  <libraries>
+    libg2esoftCommon.so
+    libG4Sim.so
+  </libraries>
+  <run>
+    <!-- Processors are registered in the order written here -->
+    <!-- if instance is omitted instance name is the same as processor name -->
+    <processor name="G4Sim" />
+  </run>
+  
+  <parameters>
+    <!-- global parameters: accessible also from processors -->
+    <string name="InputFile"></string>
+    <string name="OutputFile">testG4Out.root</string>
+    <int name="EventNumToProcess">100</int>
+    <int name="EventIdxToStart">0</int>
+    <int name="WritePeriod">100</int>
+    <int name="PrintPeriod">10</int>
+
+    <!-- logging configurations -->
+
+    <!-- Log file name, cout, cerr or a real filename -->
+    <string name="LogFileName">cerr</string>-->
+    <!-- $p = process, $i = instance, $l = level, $F = sourcefile, $L = line, $f = funcname, %*: see strftime -->
+    <string name="LogFormat">[%Y/%m/%d %H:%M:%S%z $p $l] </string>
+    <!-- log levels. later more important -->
+    <stringVec name="LogLevels">debug info warning error fatal</stringVec>
+    <!-- default level used for log() << ... -->
+    <string name="DefaultLogLevel">info</string>
+    <!-- minimal importance to write to log -->
+    <string name="WriteLogLevel">info</string>
+
+    <string name="MCParticleName">MCParticles</string>
+    <string name="MCStepName">MCSteps</string>
+    <string name="SimHitName">SimHits</string>
+    <bool name="StripInG4">1</bool>
+    
+    <processor name="G4Sim">
+      <string name="InputGDML"></string>
+      <string name="OutputGDML"></string>
+      <string name="BeamSamplingMethod">off</string>
+      <string name="BeamType">storage</string>
+      <string name="BeamSample">app/processors/G4Sim/data/sample4_5420.txt</string>
+      <double name="BeamSpinRot">0.0</double>
+      <double name="BeamPolarization">0.5</double>
+      <bool name="StablePrimary">0</bool>
+      <double name="Anomaly">0.0011659209</double>
+      <string name="MagnetData">app/processors/G4Sim/data/M20160422_G20180125_N15E-5-Yamanaka-20200214.dat</string>
+      <string name="KickerData"></string>
+      <bool name="UniformField">1</bool>
+      <bool name="InterpolateField">1</bool>
+      <bool name="DoKicker">0</bool>
+      <int name="RandomSeed">1</int>
+    </processor>
+
+  </parameters>
+</TreeProc>

@@ -1,0 +1,5 @@
+# config.cmake - configuration of external software
+
+SET( CMAKE_PREFIX_PATH
+  /gluster/share/root/root_v6.08.06;
+  CACHE PATH "CMAKE_PREFIX_PATH" FORCE )

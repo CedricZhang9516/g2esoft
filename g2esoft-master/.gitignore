@@ -1,0 +1,7 @@
+# .gitignore
+bin/*
+lib/*
+build/*
+!bin/.gitkeep
+!lib/.gitkeep
+*~
