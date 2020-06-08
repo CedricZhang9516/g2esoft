@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TreeProc>
+  <!-- libraries to load: libs should be in LD_LIBRARY_PATH path -->
+  <libraries>
+    libg2esoftCommon.so
+    libMyProc.so
+  </libraries>
+  <run>
+    <!-- Processors are registered in the order written here -->
+    <!-- if instance is omitted instance name is the same as processor name -->
+    <processor name="MyProc" instance="MyProc" />
+  </run>
+
+  <parameters>
+    <!-- global parameters: accessible also from processors -->
+    <string name="InputFile">testOut.root</string>
+    <string name="OutputFile">MyProc.root</string>
+    <int name="EventNumToProcess">100</int>
+    <int name="EventIdxToStart">0</int>
+    <int name="WritePeriod">100</int>
+    <int name="PrintPeriod">10</int>
+
+    <!-- logging configurations -->
+
+    <!-- Log file name, cout, cerr or a real filename -->
+    <string name="LogFileName">cerr</string>-->
+    <!-- $p = process, $i = instance, $l = level, $F = sourcefile, $L = line, $f = funcname, %*: see strftime -->
+    <string name="LogFormat">[%Y/%m/%d %H:%M:%S%z $p $l] </string>
+    <!-- log levels. later more important -->
+    <stringVec name="LogLevels">debug info warning error fatal</stringVec>
+    <!-- default level used for log() << ... -->
+    <string name="DefaultLogLevel">info</string>
+    <!-- minimal importance to write to log -->
+    <string name="WriteLogLevel">info</string>
+
+    <string name="SimHitName">SimHits</string>
+    <string name="StripHitName">StripHits</string>
+    <int name="NVane">40</int>
+    <bool name="DoubleRow">1</bool>
+    <double name="StripPitch">0.19</double>
+    <double name="SensorSize">98.77</double>
+    <double name="InactiveMiddle">0.5</double>
+    <doubleVec name="SensorOriginX">91.975 191.245</doubleVec>
+    <doubleVec name="SensorOriginZ">0.5 99.77</doubleVec>
+    <double name="SensorGap">0.5</double>
+    <int name="TimeDiv">5</int>
+
+    <processor name="MyProc">
+      <!-- processor common parameters -->
+      <stringVec name="test2">FUGAFUGA GEGEGE</stringVec>
+      <string name="MCParticleName">MCParticles</string>
+
+      <instance name="MyProc">
+        <!-- instance specific parameters -->
+        <string name="test">HOGEHOGE</string>
+      </instance>
+    </processor>
+
+  </parameters>
+</TreeProc>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TreeProc>
+  <!-- libraries to load: libs should be in LD_LIBRARY_PATH path -->
+  <libraries>
+    libg2esoftCommon.so
+    libStripDigi.so
+    libHitMerge.so
+    libHitReco.so
+    libTrkFinding.so
+  </libraries>
+  <run>
+    <!-- Processors are registered in the order written here -->
+    <!-- if instance is omitted instance name is the same as processor name -->
+    <processor name="StripDigi" />
+    <processor name="HitMerge" />
+    <processor name="HitReco" />
+    <processor name="TrkFinding" />
+  </run>
+  
+  <parameters>
+    <!-- global parameters: accessible also from processors -->
+    <string name="InputFile">testG4Out.root</string>
+    <string name="OutputFile">testOut.root</string>
+    <int name="EventNumToProcess">100</int>
+    <int name="EventIdxToStart">0</int>
+    <int name="WritePeriod">100</int>
+    <int name="PrintPeriod">10</int>
+    
+    <!-- logging configurations -->
+
+    <!-- Log file name, cout, cerr or a real filename -->
+    <string name="LogFileName">cerr</string>-->
+    <!-- $p = process, $i = instance, $l = level, $F = sourcefile, $L = line, $f = funcname, %*: see strftime -->
+    <string name="LogFormat">[%Y/%m/%d %H:%M:%S%z $p $l] </string>
+    <!-- log levels. later more important -->
+    <stringVec name="LogLevels">debug info warning error fatal</stringVec>
+    <!-- default level used for log() << ... -->
+    <string name="DefaultLogLevel">info</string>
+    <!-- minimal importance to write to log -->
+    <string name="WriteLogLevel">info</string>
+
+    <string name="MCParticleName">MCParticles</string>
+    <string name="MCStepName">MCSteps</string>
+    <string name="SimHitName">SimHits</string>
+    <string name="StripHitName">StripHits</string>
+    <string name="StripClusterName">StripClusters</string>
+    <string name="RecoHitName">RecoHits</string>
+    <int name="NVane">40</int>
+    <bool name="DoubleRow">1</bool>
+    <double name="StripPitch">0.19</double>
+    <double name="SensorSize">98.77</double>
+    <double name="InactiveMiddle">0.5</double>
+    <doubleVec name="SensorOriginX">91.975 191.245</doubleVec>
+    <doubleVec name="SensorOriginZ">0.5 99.77</doubleVec>
+    <double name="SensorGap">0.5</double>
+    <int name="TimeDiv">5</int>
+    
+    <processor name="StripDigi">
+      <int name="StripPerVane">512</int>
+      <double name="PosFirstStrip">0.84</double>
+      <double name="InactiveEdge">0.745</double>
+      <double name="EdepMIPThreshold">0.3</double>
+      <double name="EdepMIPThreshold2">0.0</double>
+      <bool name="StripInG4">1</bool>
+      <string name="TimeDigiMethod">Diff</string>
+      <string name="CRRCParamFileName">app/processors/StripDigi/data/CRRCnParameter.root</string>
+      <string name="DiffParamFileName">app/processors/StripDigi/data/DiffExtendParameter.root</string>
+    </processor>
+
+    <processor name="HitMerge">
+      <double name="TimeMatch">1.</double>
+    </processor>
+
+    <processor name="HitReco">
+      <double name="TimeMatch">5.</double>
+    </processor>
+
+    <processor name="TrkFinding">
+      <string name="TrackName">FoundTracks</string>
+      <int name="HoughNStepTheta">180</int>
+      <int name="HoughNStepRho">1000</int>
+      <int name="HoughRhoMin">-500</int>
+      <int name="HoughRhoMax">500</int>
+      <int name="CutHoughPhiZPeak">3</int>
+      <int name="CutHoughPhiZPeakDeltaRay">10</int>
+      <double name="CutTrackRangeThetaMin">30.0</double>
+      <double name="CutTrackRangeThetaMax">150.0</double>
+      <double name="CutDeltaRayRangeThetaMax">3.0</double>
+      <double name="CutHoughPhiZSeedResi">10.0</double>
+      <double name="CutHoughPhiZSeedResiDeltaRay">0.01</double>
+      <double name="CutExtrapTolerance">5.0</double>
+      <double name="CutExtrapToleranceCoeffDphi">5.0</double>
+      <int name="CutExtrapMiss">5</int>
+      <int name="CutExtrapNoCross">5</int>
+      <int name="ThresholdSuccess">5</int>
+      <double name="TimeWindowStep">5.0</double>
+      <double name="TimeWindowWidth">10.0</double>
+      <int name="DrawLevel">0</int>
+      <bool name="DoSmallCurlFinding">0</bool>
+      <bool name="ReDoFindingNextTimeBin">1</bool>
+      <double name="EvtDispThresholdMomentum">200.0</double>
+    </processor>
+
+  </parameters>
+</TreeProc>
